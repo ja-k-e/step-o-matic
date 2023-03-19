@@ -1,0 +1,103 @@
+<section id="save-code-modal" class="modal">
+  <div>
+    <header>
+      <p>Copy the code below and save it for later. When you want to load it, press the "Load" button and paste this in the dialog.</p>
+    </header>
+    <textarea readonly></textarea>
+    <footer>
+      <button id="close-save-code-modal">Close</button>
+    </footer>    
+  </div>
+</section>
+<section id="load-code-modal" class="modal">
+  <div>
+    <header>
+      <p>Paste your saved code below and hit "Load".</p>
+    </header>
+    <textarea autofocus></textarea>
+    <footer>
+      <button id="load-code-from-modal">Load It</button>
+      <button id="close-load-code-modal">Cancel</button>
+    </footer>
+  </div>
+</section>
+
+<main id="step-o-matic">
+  <header>
+    <section>
+      <div>
+        <label for="play">On</label>
+        <input id="play" checked type="checkbox" />
+        <label id="playing" for="play"></label>
+      </div>
+      <div>
+        <h1>Step-o-matic</h1>
+      </div>
+      <div>
+        <button id="save-code">Save</button>
+        <button id="load-code">Load</button>
+      </div>
+    </section>
+    <section>
+      <div>
+        <label for="key">Key</label>
+        <select id="key">
+          <optgroup label="Major">
+            <option value="C" selected>C</option>
+            <option value="Db">C♯</option>
+            <option value="D">D</option>
+            <option value="Eb">E♭</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="Gb">F♯</option>
+            <option value="G">G</option>
+            <option value="Ab">A♭</option>
+            <option value="A">A</option>
+            <option value="Bb">B♭</option>
+            <option value="B">B</option>
+          </optgroup>
+          <optgroup label="Minor">
+            <option value="Cm">Cm</option>
+            <option value="Dbm">C♯m</option>
+            <option value="Dm">Dm</option>
+            <option value="Ebm">E♭m</option>
+            <option value="Em">Em</option>
+            <option value="Fm">Fm</option>
+            <option value="Gbm">F♯m</option>
+            <option value="Gm">Gm</option>
+            <option value="Abm">A♭m</option>
+            <option value="Am">Am</option>
+            <option value="Bbm">B♭m</option>
+            <option value="Bm">Bm</option>
+          </optgroup>
+        </select>
+      </div>
+      <div>
+        <label for="kit">Kit</label>
+        <select id="kit">
+          <option value="808" selected>TR-808</option>
+          <option value="606">Cassette</option>
+          <option value="ana">Crunch</option>
+        </select>
+      </div>
+      <div>
+        <label for="tempo">Tempo</label>
+        <input id="tempo" type="range" step="1" min="60" max="120" value="90" />
+      </div>  
+      <div>
+        <label for="pulse">Beats</label>
+        <select id="pulse">
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+        </select>
+      </div>
+    </section>
+  </header>
+  <section id="stepper-1"></section>
+  <section id="stepper-3"></section>
+  <div id="buffering">Buffering</div>
+</main>
+

@@ -1,0 +1,296 @@
+@import url(https://fonts.googleapis.com/css?family=Courgette);
+
+html, body { 
+  height: 100%; 
+  overflow: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: #777064;
+  min-width: 650px;
+}
+
+$count: 32;
+$beat-h: 1.8rem;
+$beat-space: 0.6rem;
+$c-inst: #FFBB00;
+$c-header: #222;
+$c-drum: darken($c-inst, 15%);
+$c-drum: $c-header;
+$ui-corner: 4px;
+$c-play: #FFBB00;
+$depth: 12px;
+$shine: 4px;
+$depth-half: $depth / 2;
+
+.modal {
+  position: fixed;
+  display: none;
+  &.active {
+    display: block;
+  }
+  z-index: 10;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(0,0,0,0.8);
+  div {
+    background: $c-header;
+    color: white;
+    width: 95%;
+    max-width: 600px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2rem;
+    border-radius: $ui-corner * 2;
+    text-align: center;
+  }
+  p {
+    margin: 0;
+  }
+  textarea {
+    width: 100%;
+    height: 200px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-size: 0.75em;
+    box-sizing: border-box;
+    font-family: "Andale Mono", monospace;
+    border: 1px solid darken(#444, 15%);
+    border-radius: $ui-corner;
+    color: $c-header;
+  }
+  button {
+    width: 100px;
+  }
+  #load-code-from-modal {
+    background: $c-inst;
+  }
+}
+
+button {
+  border-radius: $ui-corner;
+  border: 1px solid;
+  color: white;
+  background: #444;
+  border-color: darken(#444, 5%);
+}
+
+#step-o-matic {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  > header, > section {
+    margin: 0 auto;
+    position: relative;
+    padding: 1rem 2rem;
+    width: 50%;
+  }
+  @for $i from 3 through 7 {
+    @if ($i == 3) {
+      &.pulse-#{$i} > header h1 {
+        font-size: 2.2rem;
+      }
+    }
+    &.pulse-#{$i} > header,
+    &.pulse-#{$i} > section {
+      width: $beat-h * 4 * $i;
+    }
+  }
+  > header {
+    height: 100%;
+    transform: translateZ(0);
+    background: $c-header;
+    border-radius: $ui-corner * 2 $ui-corner * 2 0 0;
+    box-shadow: 
+      0px 0px 0px $shine lighten($c-header, 2%),
+      0px 0px 0px $depth darken($c-header, 4%);
+
+    h1, button {
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      font-family: Courgette, sans-serif;
+    }
+    h1 {
+      font-size: 3rem;
+      text-align: center;
+      margin: 0 0 0.5rem;
+    }
+    label, button {
+      font-family: Helvetica, sans-serif;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 0.0125em;
+    }
+    label {
+      color: #999;
+      text-shadow: -1px -1px 0px black;
+    }
+    button {
+      display: block;
+      + button {
+        margin-top: 0.5rem;
+      }
+    }
+    #save-code {
+      background: $c-play;
+      border-color: darken($c-play, 5%);
+    }
+    #load-code {
+      
+    }
+    section {
+      display: flex;
+      div {
+        flex: 2;
+        &:last-child { flex: 1; }
+        text-align: center;
+        padding: 0 0.5rem;
+        input, select, button { 
+          width: 100%;
+        }
+      }
+      &:first-of-type {
+        margin-bottom: 0.5rem;
+        div { flex: 8; }
+        div:first-child { flex: 1; }
+        div:last-child { flex: 1; }
+      }
+      label {
+        display: block;
+        margin-bottom: 0.5em;
+      }
+      #playing {
+        display: block;
+        height: 1rem; width: 1rem;
+        border-radius: 50%;
+        border: 2px solid darken($c-play, 20%);
+        background: darken($c-play, 30%);
+        margin: 0 auto;
+        cursor: pointer;
+      }
+      #play {
+        position: absolute;
+        pointer-events: none;
+        opacity: 0;
+      }
+      #play:checked + #playing {
+        border: 2px solid $c-play;
+        background: lighten($c-play, 10%);
+        box-shadow: 0px 0px 12px $c-play;
+      }
+    }
+  }
+  > section {
+    position: relative;
+    z-index: 9;
+    background: $c-inst;
+    box-shadow: 
+      $shine 0px 0px 0px lighten($c-inst, 5%),
+      -$shine 0px 0px 0px lighten($c-inst, 5%),
+      $depth 0px 0px darken($c-inst, 5%),
+      -$depth 0px 0px darken($c-inst, 5%);
+    &:last-of-type {
+      z-index: 8;
+      background: $c-drum;
+      box-shadow: 
+        0px 0px 0px $shine lighten($c-drum, 2%),
+        0px 0px 0px $depth darken($c-drum, 4%);
+      border-radius: 0 0 $ui-corner $ui-corner;
+    }
+  }
+  
+  #buffering {
+    z-index: 11;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1rem;
+    border-radius: $ui-corner;
+    color: white;
+    background: $c-header;
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
+  
+  .note {
+    display: flex;
+  }
+  
+  .beat {
+    position: relative;
+    flex: 1;
+    height: $beat-h;
+    &::after {
+      content: "";
+      border-radius: $ui-corner;
+      position: absolute;
+      top: $beat-space / 2;
+      right: $beat-space / 2;
+      bottom: $beat-space / 2;
+      left: $beat-space / 2;
+      transform-origin: 50% 50%;
+      transition: transform 200ms ease-in-out,
+        background 100ms ease-in-out,
+        box-shadow 100ms ease-in-out;
+      background: rgba(255,255,255,0.5);
+    }
+    &.active::after {
+      background: rgba(255,255,255,1);
+      box-shadow: 0px 0px 12px rgba(255,255,255,1);
+    }
+  }
+  
+  // cornering the pad groups
+  .note:first-child {
+    @for $i from 1 through $count {
+      @if (($i + 3) % 8 == 0) {
+        .beat:nth-child(#{$i}) { border-radius: $ui-corner 0 0 0; }
+      }
+      @if ($i % 8 == 0) {
+        .beat:nth-child(#{$i}) { border-radius: 0 $ui-corner 0 0; }
+      }
+    }
+  }
+  .note:last-child {
+    @for $i from 1 through $count {
+      @if (($i + 3) % 8 == 0) {
+        .beat:nth-child(#{$i}) { border-radius: 0 0 0 $ui-corner; }
+      }
+      @if ($i % 8 == 0) {
+        .beat:nth-child(#{$i}) { border-radius: 0 0 $ui-corner 0; }
+      }
+    }
+  }
+  
+  @for $i from 1 through $count {
+    // coloring the pad groups
+    $index-4: ceil($i / 4);
+    @if ($index-4 % 2 == 0) {
+      .beat:nth-child(#{$i}) {
+        background: rgba(255,255,255,0.2);
+      }
+    }
+    // styling playing beat / playing note
+    @for $i from 1 through $count {
+      &.step-#{$i - 1} .beat:nth-child(#{$i}) {
+        &::after {
+          background: rgba(255,255,255,0.8);
+          transform: scale(0.9);          
+        }
+        &.active::after {
+          background: rgba(255,255,255,1);
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+  
+  
+}
